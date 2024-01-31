@@ -1,0 +1,52 @@
+<LoginPage>:   
+    FloatLayout:
+        canvas:
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                source: "bg2.jpg"
+        Label:
+            text: "A imaginação é a ponte entre a mente consciente e a mente inconsciente."
+            bold: True
+            markup: True
+            pos_hint: {"right": 0.9, "top":0.85}
+            size_hint: 0.8, 0.2
+        TextInput:
+            id:email
+            hint_text: "E-mail"
+            pos_hint: {"right": 0.9, "top": 0.7}
+            size_hint: 0.8, 0.1
+        TextInput:
+            id:senha
+            hint_text: "Senha"
+            pos_hint: {"right": 0.9, "top": 0.55}
+            size_hint: 0.8, 0.1
+        Label:
+            text:"Faca seu login"
+            bold: True
+            markup: True
+            pos_hint: {"right": 0.9, "top": 0.4}
+            size_hint: 0.8, 0.1
+        LabelButton:
+            canvas.before:
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                    source: "botao1.png" if self.state == "normal" else "botao2.png"
+            on_release: app.mudar_tela("menu")
+            text: "Fazer login"
+            bold: True
+            pos_hint: {"right": 0.45, "top": 0.3}
+            size_hint: 0.4, 0.08
+        LabelButton:
+            canvas.before:
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                    source: "botao1.png" if self.state == "normal" else "botao2.png"
+            on_release: print("pongos22")
+            text: "Registrar-se"
+            bold: True
+            pos_hint: {"right": 0.95, "top": 0.3}
+            size_hint: 0.4, 0.08
+        

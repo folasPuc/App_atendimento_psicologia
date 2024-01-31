@@ -1,4 +1,28 @@
-Button:
-    text:"a"
-    text:"bbb"
-    text:"cccc"
+#:include kv/loginpage.kv
+#:include kv/menu.kv
+#:import utils kivy.utils
+
+
+
+FloatLayout:
+    canvas:
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: "bg2.jpg"
+    Image:
+        pos_hint: {"right": 1, "top": 0.9}
+        size_hint: 1, 0.2
+        source: "logo_psico.png"
+    ScreenManager:
+        pos_hint: {"right": 1, "top": 0.7}
+        size_hint: 1, 0.7
+        id: screen_manager
+        LoginPage:
+            name: "loginpage"
+            id: loginpage
+        Menu:
+            name: "menu"
+            id: menu
+    
+
