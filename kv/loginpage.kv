@@ -6,6 +6,7 @@
                 pos: self.pos
                 source: "bg2.jpg"
         Label:
+            id: mensagem_login
             text: "A imaginação é a ponte entre a mente consciente e a mente inconsciente."
             bold: True
             markup: True
@@ -20,6 +21,11 @@
             id:senha
             hint_text: "Senha"
             pos_hint: {"right": 0.9, "top": 0.55}
+            size_hint: 0.8, 0.1
+        TextInput:
+            id:telefone
+            hint_text: "telefone"
+            pos_hint: {"right": 0.9, "top": 0.4}
             size_hint: 0.8, 0.1
         Label:
             text:"Faca seu login"
@@ -44,7 +50,7 @@
                     pos: self.pos
                     size: self.size
                     source: "botao1.png" if self.state == "normal" else "botao2.png"
-            on_release: print("pongos22")
+            on_release: app.myfirebase.criar_conta(email.text, senha.text, telefone.text)
             text: "Registrar-se"
             bold: True
             pos_hint: {"right": 0.95, "top": 0.3}
