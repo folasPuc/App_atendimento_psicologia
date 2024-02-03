@@ -34,8 +34,8 @@ class MyFirebase():
 
         else:
             mensagem_erro = requisicao_dic["error"]["message"]
-            # mensagem_erro = mensagem_erro.replace("MISSING_PASSWORD", "Senha inválida")
-            # aqui coloca a traducao
+            mensagem_erro = mensagem_erro.replace("MISSING_PASSWORD", "Senha inválida")
+            mensagem_erro = mensagem_erro.replace("INVALID_EMAI", "Email inválido")
             meu_aplicativo = App.get_running_app()
             pagina_login = meu_aplicativo.root.ids["loginpage"]
             pagina_login.ids["mensagem_login"].text=mensagem_erro
