@@ -39,7 +39,7 @@
                     pos: self.pos
                     size: self.size
                     source: "botao1.png" if self.state == "normal" else "botao2.png"
-            on_release: app.mudar_tela("menu")
+            on_release: app.myfirebase.fazer_login(email.text, senha.text)
             text: "Fazer login"
             bold: True
             pos_hint: {"right": 0.45, "top": 0.3}

@@ -1,4 +1,4 @@
-<Menu>:
+<MenuAdmin>:
     FloatLayout:
         canvas:
             Rectangle:
@@ -30,11 +30,14 @@
                     size: self.size
                     pos: self.pos
             ImageButton:
-                source: "calendario_psico.png"
-                on_release: print("calendario")
-            ImageButton:
                 source: "historico_psico.png"
-                on_release: print("historico")
+                on_release: print("marcar_horarios")
+            ImageButton:
+                source: "calendario_psico.png"
+                on_release: print("sessoes marcadas")
+            ImageButton:
+                source: "ficha_psico.png"
+                on_release: app.carregar_dias()
             ImageButton:
                 source: "ajustes_psico.png"
-                on_release: print("ajustes")
+                on_release: print("ajustes_adm")
