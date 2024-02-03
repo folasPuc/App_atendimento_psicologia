@@ -67,10 +67,22 @@ class MainApp(App):
             email_usuario = requisicao_dic[local_id_usuario].get('email')
             telefone_usuario = requisicao_dic[local_id_usuario].get('telefone')
             print(email_usuario, telefone_usuario)
-        pass
-        
 
-
+    def carregar_dias(self):
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json"
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        print(requisicao_dic)
+        teste = requisicao_dic['Dias']
+        print(teste)
+        for dia in teste:
+            horario = teste[dia]
+            horario_teste = horario.get('Horarios')
+            lista_horarios = horario_teste.split(',')
+            info = {"Dia": dia, "Horarios": lista_horarios}
+            print(info['Dia'])
+            print(info['Horarios'])
+        self.mudar_tela("todospacientes")
 
 MainApp().run()
 #comentario
