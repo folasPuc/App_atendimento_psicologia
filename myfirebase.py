@@ -27,7 +27,7 @@ class MyFirebase():
 
             
             link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/{local_id}.json"
-            info_usuario = f'{{"minhas_sessoes": "", "email": "{email}", "telefone": "{telefone}"}}'
+            info_usuario = f'{{"minhas_sessoes": "", "email": "{email}", "telefone": "{telefone}", "ficha": ""}}'
             requisicao_usuario = requests.patch(link, data = info_usuario)
             meu_aplicativo.carregar_infos_usuario()
             meu_aplicativo.mudar_tela("menu")
