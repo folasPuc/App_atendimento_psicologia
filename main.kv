@@ -1,5 +1,7 @@
 #:include kv/loginpage.kv
 #:include kv/menu.kv
+#:include kv/menuadmin.kv
+#:include kv/todospacientes.kv
 #:import utils kivy.utils
 
 
@@ -24,5 +26,12 @@ FloatLayout:
         Menu:
             name: "menu"
             id: menu
+        MenuAdmin:
+            name: "menuadmin"
+            id: menuadmin
+        TodosPacientes:
+            name: "todospacientes"
+            id: todospacientes
+
     
 

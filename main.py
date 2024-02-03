@@ -5,6 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from myfirebase import MyFirebase
+from clientes import Clientes
 import requests
 
 import unicodedata
@@ -13,6 +14,10 @@ import unicodedata
 class LoginPage(Screen):
     pass
 class Menu(Screen):
+    pass
+class MenuAdmin(Screen):
+    pass
+class TodosPacientes(Screen):
     pass
 class LabelButton(ButtonBehavior,Label ):
     pass
@@ -45,12 +50,46 @@ class MainApp(App):
             telefone = requisicao_dic["telefone"]
             email_user = self.root.ids.menu.ids.email_usuario.text = "[b]Email:[/b] {}".format(email)
             tel_user = self.root.ids.menu.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
-            self.mudar_tela("menu")
+            if email == "admin@gmail.com":
+                email_user = self.root.ids.menuadmin.ids.email_usuario.text = "[b]Email:[/b] {}".format(email)
+                tel_user = self.root.ids.menuadmin.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
+                self.mudar_tela("menuadmin")
+            else:
+                email_user = self.root.ids.menu.ids.email_usuario.text = "[b]Email:[/b] {}".format(email)
+                tel_user = self.root.ids.menu.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
+                self.mudar_tela("menu")
         except:
             pass
-        
+    def carregar_pacientes(self):
+        link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"'
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        for local_id_usuario in requisicao_dic:
+            email_usuario = requisicao_dic[local_id_usuario].get('email')
+            telefone_usuario = requisicao_dic[local_id_usuario].get('telefone')
+            ficha_usuario = requisicao_dic[local_id_usuario].get('ficha')
+            if email_usuario and telefone_usuario and ficha_usuario is not None:
+                cliente = Clientes(email = email_usuario, telefone = telefone_usuario, ficha = ficha_usuario)
+            else:
+                pass
+            # info = {"Email": email_usuario, "Telefone": telefone_usuario, "Ficha": ficha_usuario}
+            # print(info)
 
-
+    def carregar_dias(self):
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json"
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        print(requisicao_dic)
+        teste = requisicao_dic['Dias']
+        print(teste)
+        for dia in teste:
+            horario = teste[dia]
+            horario_teste = horario.get('Horarios')
+            lista_horarios = horario_teste.split(',')
+            info = {"Dia": dia, "Horarios": lista_horarios}
+            print(info['Dia'])
+            print(info['Horarios'])
+        self.mudar_tela("todospacientes")
 
 MainApp().run()
 #comentario
