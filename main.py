@@ -14,6 +14,10 @@ class LoginPage(Screen):
     pass
 class Menu(Screen):
     pass
+class MenuAdmin(Screen):
+    pass
+class TodosPacientes(Screen):
+    pass
 class LabelButton(ButtonBehavior,Label ):
     pass
 class ImageButton(ButtonBehavior,Image ):
@@ -45,9 +49,25 @@ class MainApp(App):
             telefone = requisicao_dic["telefone"]
             email_user = self.root.ids.menu.ids.email_usuario.text = "[b]Email:[/b] {}".format(email)
             tel_user = self.root.ids.menu.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
-            self.mudar_tela("menu")
+            if email == "admin@gmail.com":
+                email_user = self.root.ids.menuadmin.ids.email_usuario.text = "[b]Email:[/b] {}".format(email)
+                tel_user = self.root.ids.menuadmin.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
+                self.mudar_tela("menuadmin")
+            else:
+                email_user = self.root.ids.menu.ids.email_usuario.text = "[b]Email:[/b] {}".format(email)
+                tel_user = self.root.ids.menu.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
+                self.mudar_tela("menu")
         except:
             pass
+    def carregar_pacientes(self):
+        link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"'
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        for local_id_usuario in requisicao_dic:
+            email_usuario = requisicao_dic[local_id_usuario].get('email')
+            telefone_usuario = requisicao_dic[local_id_usuario].get('telefone')
+            print(email_usuario, telefone_usuario)
+        pass
         
 
 

@@ -63,7 +63,10 @@ class MyFirebase():
                 arquivo.write(refresh_token)
 
             meu_aplicativo.carregar_infos_usuario()
-            meu_aplicativo.mudar_tela("menu")
+            if email == "admin@gmail.com":
+                meu_aplicativo.mudar_tela("menuadmin")
+            else:
+                meu_aplicativo.mudar_tela("menu")
 
         else:
             mensagem_erro = requisicao_dic["error"]["message"]

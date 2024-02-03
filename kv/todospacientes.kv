@@ -1,0 +1,18 @@
+<TodosPacientes>:
+    FloatLayout:
+        canvas:
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                source: "bg2.jpg"
+        ScrollView:
+            pos_hint: {"right": 1, "top": 0.75}
+            size_hint: 1, 0.63
+            GridLayout:
+                cols: 1
+                id: lista_pacientes
+
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: "90dp"
+                row_force_default: True
