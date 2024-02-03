@@ -5,6 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from myfirebase import MyFirebase
+from clientes import Clientes
 import requests
 
 import unicodedata
@@ -66,7 +67,13 @@ class MainApp(App):
         for local_id_usuario in requisicao_dic:
             email_usuario = requisicao_dic[local_id_usuario].get('email')
             telefone_usuario = requisicao_dic[local_id_usuario].get('telefone')
-            print(email_usuario, telefone_usuario)
+            ficha_usuario = requisicao_dic[local_id_usuario].get('ficha')
+            if email_usuario and telefone_usuario and ficha_usuario is not None:
+                cliente = Clientes(email = email_usuario, telefone = telefone_usuario, ficha = ficha_usuario)
+            else:
+                pass
+            # info = {"Email": email_usuario, "Telefone": telefone_usuario, "Ficha": ficha_usuario}
+            # print(info)
 
     def carregar_dias(self):
         link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json"
