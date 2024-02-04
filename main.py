@@ -19,6 +19,12 @@ class MenuAdmin(Screen):
     pass
 class TodosPacientes(Screen):
     pass
+class ProcurarPaciente(Screen):
+    pass
+class AlterarFicha(Screen):
+    pass
+class BoxFicha(Screen):
+    pass
 class LabelButton(ButtonBehavior,Label ):
     pass
 class ImageButton(ButtonBehavior,Image ):
@@ -37,6 +43,26 @@ class MainApp(App):
     def mudar_tela(self, id_tela):
         gerenciador_telas = self.root.ids["screen_manager"]
         gerenciador_telas.current = id_tela  
+    def voltar(self, id_tela):
+        lista_remover_pacientes = self.root.ids.todospacientes.ids.lista_pacientes
+        for item in list(lista_remover_pacientes.children):
+            lista_remover_pacientes.remove_widget(item)
+
+        link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"'
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        for local_id_usuario in requisicao_dic:
+            email_usuario = requisicao_dic[local_id_usuario].get('email')
+            telefone_usuario = requisicao_dic[local_id_usuario].get('telefone')
+            ficha_usuario = requisicao_dic[local_id_usuario].get('ficha')
+            if email_usuario and telefone_usuario and ficha_usuario is not None:
+                cliente = Clientes(email = email_usuario, telefone = telefone_usuario, ficha = ficha_usuario)
+                todospacientes = self.root.ids["todospacientes"]
+                lista_pacientes = todospacientes.ids["lista_pacientes"]
+                lista_pacientes.add_widget(cliente)
+            else:
+                pass
+        self.mudar_tela(id_tela)
     def carregar_infos_usuario(self):
         try:
             with open("refreshtoken.txt", "r") as arquivo:
@@ -61,6 +87,10 @@ class MainApp(App):
         except:
             pass
     def carregar_pacientes(self):
+        lista_remover_pacientes = self.root.ids.todospacientes.ids.lista_pacientes
+        for item in list(lista_remover_pacientes.children):
+            lista_remover_pacientes.remove_widget(item)
+
         link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"'
         requisicao = requests.get(link)
         requisicao_dic = requisicao.json()
@@ -70,11 +100,14 @@ class MainApp(App):
             ficha_usuario = requisicao_dic[local_id_usuario].get('ficha')
             if email_usuario and telefone_usuario and ficha_usuario is not None:
                 cliente = Clientes(email = email_usuario, telefone = telefone_usuario, ficha = ficha_usuario)
+                todospacientes = self.root.ids["todospacientes"]
+                lista_pacientes = todospacientes.ids["lista_pacientes"]
+                lista_pacientes.add_widget(cliente)
             else:
                 pass
             # info = {"Email": email_usuario, "Telefone": telefone_usuario, "Ficha": ficha_usuario}
             # print(info)
-
+        self.mudar_tela("todospacientes")
     def carregar_dias(self):
         link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json"
         requisicao = requests.get(link)
@@ -90,6 +123,43 @@ class MainApp(App):
             print(info['Dia'])
             print(info['Horarios'])
         self.mudar_tela("todospacientes")
+    def procurar_paciente(self, email):
+        link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"&equalTo="{email}"'
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        for local_id in requisicao_dic:
+            email_user = requisicao_dic[local_id].get('email')
+            telefone_user = requisicao_dic[local_id].get('telefone')
+            ficha_user = requisicao_dic[local_id].get('ficha')
+        self.root.ids.alterar_ficha.ids.email_usuario.text = email_user
+        self.root.ids.alterar_ficha.ids.telefone_usuario.text = telefone_user
+        self.mudar_tela("alterar_ficha")
+    def carregar_ficha(self):
+        email = self.root.ids.alterar_ficha.ids.email_usuario.text
+        link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"&equalTo="{email}"'
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        for local_id in requisicao_dic:
+            email_user = requisicao_dic[local_id].get('email')
+            telefone_user = requisicao_dic[local_id].get('telefone')
+            ficha_user = requisicao_dic[local_id].get('ficha')
+            self.root.ids.box_ficha.ids.ficha_paciente.text = ficha_user
+        self.mudar_tela("box_ficha")
+    def atualizar_ficha(self):
+        email = self.root.ids.alterar_ficha.ids.email_usuario.text
+        print(email)
+        link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"&equalTo="{email}"'
+        ficha_atualizada = self.root.ids.box_ficha.ids.ficha_paciente.text
+        print(ficha_atualizada)
+        info_usuario = f'{{"ficha": "{ficha_atualizada}"}}'
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        print(requisicao_dic)
+        for local_id in requisicao_dic:
+            print(local_id)
+            link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/{local_id}.json'
+            req = requests.patch(link, data = info_usuario)
+        print("chegou no final da funcao")
 
 MainApp().run()
 #comentario

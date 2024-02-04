@@ -16,6 +16,17 @@
                 height: self.minimum_height
                 row_default_height: "90dp"
                 row_force_default: True
-        Label:
-            id: dias_marcar
-            text: "teste32432432"
+        LabelButton:
+            id: alterar_ficha
+            text: "Alterar ficha"
+            bold: True
+            on_release: app.mudar_tela("procurarpaciente")
+            pos_hint: {"right": 0.7, "top": 0.85}
+            size_hint: 0.4, 0.08
+        ImageButton:
+            source: "voltar_icone.png"
+            on_release: app.mudar_tela("menuadmin")
+            pos_hint: {"right": 0.25, "top": 0.17}
+            size_hint: 0.4, 0.08
+
+            

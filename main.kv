@@ -2,6 +2,9 @@
 #:include kv/menu.kv
 #:include kv/menuadmin.kv
 #:include kv/todospacientes.kv
+#:include kv/procurarpaciente.kv
+#:include kv/alterar_ficha.kv
+#:include kv/box_ficha.kv
 #:import utils kivy.utils
 
 
@@ -32,6 +35,15 @@ FloatLayout:
         TodosPacientes:
             name: "todospacientes"
             id: todospacientes
+        ProcurarPaciente:
+            name: "procurarpaciente"
+            id: procurarpaciente
+        AlterarFicha:
+            name: "alterar_ficha"
+            id: alterar_ficha
+        BoxFicha:
+            name: "box_ficha"
+            id: box_ficha
 
     
 
