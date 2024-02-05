@@ -1,11 +1,13 @@
-from kivy.app import App 
+from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.label import Label
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from myfirebase import MyFirebase
+from kivymd.uix.pickers import MDDatePicker
 from clientes import Clientes
+import subprocess
 import requests
 
 import unicodedata
@@ -37,7 +39,8 @@ class MainApp(App):
     def build(self):
         self.myfirebase = MyFirebase()
         return GUI
-    
+    def run_calendar(self):
+        subprocess.Popen(['Python', "Calendario.py"])
     def on_start(self):
         self.carregar_infos_usuario()   
     def mudar_tela(self, id_tela):
@@ -52,9 +55,11 @@ class MainApp(App):
         requisicao = requests.get(link)
         requisicao_dic = requisicao.json()
         for local_id_usuario in requisicao_dic:
-            email_usuario = requisicao_dic[local_id_usuario].get('email')
-            telefone_usuario = requisicao_dic[local_id_usuario].get('telefone')
-            ficha_usuario = requisicao_dic[local_id_usuario].get('ficha')
+            usuario_info = requisicao_dic[local_id_usuario]
+            if isinstance(usuario_info, dict):
+                email_usuario = usuario_info.get('email')
+                telefone_usuario = usuario_info.get('telefone')
+                ficha_usuario = usuario_info.get('ficha')
             if email_usuario and telefone_usuario and ficha_usuario is not None:
                 cliente = Clientes(email = email_usuario, telefone = telefone_usuario, ficha = ficha_usuario)
                 todospacientes = self.root.ids["todospacientes"]
@@ -94,10 +99,13 @@ class MainApp(App):
         link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"'
         requisicao = requests.get(link)
         requisicao_dic = requisicao.json()
+        print(type(requisicao_dic))
         for local_id_usuario in requisicao_dic:
-            email_usuario = requisicao_dic[local_id_usuario].get('email')
-            telefone_usuario = requisicao_dic[local_id_usuario].get('telefone')
-            ficha_usuario = requisicao_dic[local_id_usuario].get('ficha')
+            usuario_info = requisicao_dic[local_id_usuario]
+            if isinstance(usuario_info, dict):
+                email_usuario = usuario_info.get('email')
+                telefone_usuario = usuario_info.get('telefone')
+                ficha_usuario = usuario_info.get('ficha')
             if email_usuario and telefone_usuario and ficha_usuario is not None:
                 cliente = Clientes(email = email_usuario, telefone = telefone_usuario, ficha = ficha_usuario)
                 todospacientes = self.root.ids["todospacientes"]
@@ -105,6 +113,20 @@ class MainApp(App):
                 lista_pacientes.add_widget(cliente)
             else:
                 pass
+            info = {"Email": email_usuario, "Telefone": telefone_usuario, "Ficha": ficha_usuario}
+            print(info)
+        # Handle the case where usuario_info is not a dictionary
+
+            # email_usuario = requisicao_dic[local_id_usuario]['email']
+            # telefone_usuario = requisicao_dic[local_id_usuario].get('telefone')
+            # ficha_usuario = requisicao_dic[local_id_usuario].get('ficha')
+            # if email_usuario and telefone_usuario and ficha_usuario is not None:
+            #     cliente = Clientes(email = email_usuario, telefone = telefone_usuario, ficha = ficha_usuario)
+            #     todospacientes = self.root.ids["todospacientes"]
+            #     lista_pacientes = todospacientes.ids["lista_pacientes"]
+            #     lista_pacientes.add_widget(cliente)
+            # else:
+            #     pass
             # info = {"Email": email_usuario, "Telefone": telefone_usuario, "Ficha": ficha_usuario}
             # print(info)
         self.mudar_tela("todospacientes")
@@ -128,12 +150,14 @@ class MainApp(App):
         requisicao = requests.get(link)
         requisicao_dic = requisicao.json()
         for local_id in requisicao_dic:
-            email_user = requisicao_dic[local_id].get('email')
-            telefone_user = requisicao_dic[local_id].get('telefone')
-            ficha_user = requisicao_dic[local_id].get('ficha')
-        self.root.ids.alterar_ficha.ids.email_usuario.text = email_user
-        self.root.ids.alterar_ficha.ids.telefone_usuario.text = telefone_user
-        self.mudar_tela("alterar_ficha")
+            usuario_info = requisicao_dic[local_id]
+            if isinstance(usuario_info, dict):
+                email_user = usuario_info.get('email')
+                telefone_user = usuario_info.get('telefone')
+                ficha_user = usuario_info.get('ficha')
+            self.root.ids.alterar_ficha.ids.email_usuario.text = email_user
+            self.root.ids.alterar_ficha.ids.telefone_usuario.text = telefone_user
+            self.mudar_tela("alterar_ficha")
     def carregar_ficha(self):
         email = self.root.ids.alterar_ficha.ids.email_usuario.text
         link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/.json?orderBy="email"&equalTo="{email}"'
