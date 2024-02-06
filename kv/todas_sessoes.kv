@@ -1,4 +1,4 @@
-<TodosPacientes>:
+<TodasSessoes>:
     FloatLayout:
         canvas:
             Rectangle:
@@ -10,23 +10,21 @@
             size_hint: 1, 0.63
             GridLayout:
                 cols: 1
-                id: lista_pacientes
+                id: lista_sessoes
 
                 size_hint_y: None
                 height: self.minimum_height
                 row_default_height: "90dp"
                 row_force_default: True
-        LabelButton:
-            id: alterar_ficha
-            text: "Alterar ficha"
-            bold: True
-            on_release: app.mudar_tela("procurarpaciente")
-            pos_hint: {"right": 0.7, "top": 0.85}
-            size_hint: 0.4, 0.08
         ImageButton:
             source: "voltar_icone.png"
             on_release: app.mudar_tela("menuadmin")
             pos_hint: {"right": 0.25, "top": 0.17}
             size_hint: 0.4, 0.08
-
-            
+        LabelButton:
+            id: alterar_sessao
+            text: "Tirar Sessao"
+            bold: True
+            on_release: app.mudar_tela("cancelar_sessao")
+            pos_hint: {"right": 0.7, "top": 0.85}
+            size_hint: 0.4, 0.08

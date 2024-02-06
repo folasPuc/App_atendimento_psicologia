@@ -2,8 +2,13 @@
 #:include kv/menu.kv
 #:include kv/menuadmin.kv
 #:include kv/todospacientes.kv
+#:include kv/procurarpaciente.kv
+#:include kv/alterar_ficha.kv
+#:include kv/box_ficha.kv
+#:include kv/todas_sessoes.kv
+#:include kv/cancelar_sessao.kv
+#:include kv/register_page.kv
 #:import utils kivy.utils
-
 
 
 FloatLayout:
@@ -32,6 +37,24 @@ FloatLayout:
         TodosPacientes:
             name: "todospacientes"
             id: todospacientes
-
+        ProcurarPaciente:
+            name: "procurarpaciente"
+            id: procurarpaciente
+        AlterarFicha:
+            name: "alterar_ficha"
+            id: alterar_ficha
+        BoxFicha:
+            name: "box_ficha"
+            id: box_ficha
+        TodasSessoes:
+            name: "todas_sessoes"
+            id: todas_sessoes
+        CancelarSessao:
+            name: "cancelar_sessao"
+            id: cancelar_sessao
+        RegisterPage:
+            name: "register_page"
+            id: register_page
+        
     
 
