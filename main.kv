@@ -5,8 +5,10 @@
 #:include kv/procurarpaciente.kv
 #:include kv/alterar_ficha.kv
 #:include kv/box_ficha.kv
+#:include kv/todas_sessoes.kv
+#:include kv/cancelar_sessao.kv
+#:include kv/register_page.kv
 #:import utils kivy.utils
-
 
 
 FloatLayout:
@@ -44,6 +46,15 @@ FloatLayout:
         BoxFicha:
             name: "box_ficha"
             id: box_ficha
-
+        TodasSessoes:
+            name: "todas_sessoes"
+            id: todas_sessoes
+        CancelarSessao:
+            name: "cancelar_sessao"
+            id: cancelar_sessao
+        RegisterPage:
+            name: "register_page"
+            id: register_page
+        
     
 

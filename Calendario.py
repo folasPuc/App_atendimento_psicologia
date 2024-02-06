@@ -7,8 +7,30 @@ from kivy.uix.textinput import TextInput
 from kivy.app import App
 from datetime import date, timedelta
 from functools import partial
+from kivy.uix.image import Image
+from kivy.uix.screenmanager import Screen, ScreenManager
 import requests
 import json
+
+class LoginPage(Screen):
+    pass
+class Menu(Screen):
+    pass
+class MenuAdmin(Screen):
+    pass
+class TodosPacientes(Screen):
+    pass
+class ProcurarPaciente(Screen):
+    pass
+class AlterarFicha(Screen):
+    pass
+class BoxFicha(Screen):
+    pass
+class LabelButton(ButtonBehavior,Label ):
+    pass
+class ImageButton(ButtonBehavior,Image ):
+    pass
+
 class TimePicker(BoxLayout):
     def __init__(self, *args, **kwargs):
         super(TimePicker, self).__init__(**kwargs)
@@ -172,6 +194,43 @@ class DatePicker(BoxLayout):
         selected_date = f"{self.date.year}-{self.date.month:02d}-{self.selected_day:02d}"
         selected_times = list(self.available_times.get(self.selected_day, set()))
         print(f"Consulta confirmada para {selected_date} nos horários: {selected_times}")
+        with open("config.txt", "r") as arquivo:
+            email = arquivo.read()
+        with open("local_id.txt", "r") as arquivo:
+            local_id = arquivo.read()
+        selected_times_str = selected_times
+        
+        # print(str_array)
+        # data = {str_array: ""}
+        # json_data = json.dumps(data)
+
+        # link = "https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
+        # info_usuario = f'{{"email": "{email}"}}'
+        # req = requests.patch(link, data = info_usuario)
+        # req_dic = req.json()
+        
+        # link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes/{email}.json"
+        # info_usuario = f'{{"minhas_sessoes": "", "Dia": "{selected_data_str}", "Horario": "{selected_times_str}", "ficha": ""}}'
+        # req = requests.patch(link, data = info_usuario)
+        # req_dic = req.json()
+        # print(req_dic)
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
+        info_dia = f'{{"{local_id}": ""}}'
+        req = requests.patch(link, data = info_dia)
+        req_dic = req.json()
+
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes/{local_id}.json"
+        info_dia = f'{{"Nome": "{email}", "Data": "{selected_date}", "Hora": "{selected_times_str}"}}'
+        req = requests.patch(link, data = info_dia)
+        req_dic = req.json()
+        print(req_dic)
+        
+
+
+        # screen_manager = app.root
+        # menu_screen = screen_manager.get_screen('menu')  # Substitua 'menu' pelo nome da tela Menu no ScreenManager
+        # email = menu_screen.ids.menu.email_usuario
+        # print(email)
         # Add further logic to handle the confirmation, e.g., update a database, etc.
         # selected_times_str = str(selected_times)
         # link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Dias.json"
@@ -185,6 +244,16 @@ class DatePicker(BoxLayout):
         # req = requests.patch(link, data = info_dia)
         # req_dic = req.json()
         # print(req_dic)
+
+
+        # selected_times_str = [str(time) for time in selected_times]
+        # selected_times_str_combined = ', '.join(selected_times_str)
+        # selected_data_str = [str(data) for data in selected_date]
+        # selected_data_str_combined = ', '.join(selected_data_str)
+        # print(selected_data_str_combined, selected_times_str_combined, email)
+
+
+
 
 
         # #testando pegar horarios

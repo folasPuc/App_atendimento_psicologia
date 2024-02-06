@@ -8,7 +8,7 @@
         TextInput:
             id: alterar_ficha
             text: ""
-            hint_text: "Digite o email do paciente que deseja alterar a ficha: "
+            hint_text: "Digite o nome do paciente que deseja alterar a ficha: "
             pos_hint: {"right": 0.9, "top": 0.7}
             size_hint: 0.8, 0.1
         LabelButton:
@@ -24,6 +24,6 @@
             size_hint: 0.4, 0.08
         ImageButton:
             source: "voltar_icone.png"
-            on_release: app.voltar("todospacientes")
+            on_release: app.mudar_tela("todospacientes")
             pos_hint: {"right": 0.25, "top": 0.17}
             size_hint: 0.4, 0.08

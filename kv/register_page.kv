@@ -1,4 +1,4 @@
-<LoginPage>:   
+<RegisterPage>:   
     FloatLayout:
         canvas:
             Rectangle:
@@ -7,9 +7,7 @@
                 source: "bg2.jpg"
         Label:
             id: mensagem_login
-            text: "A imaginação é a ponte entre a mente consciente e a mente inconsciente."
-            font_size:"10sp"
-            font_name: "Poppins-SemiBold.ttf"
+            text: "Registre-se."
             bold: True
             markup: True
             pos_hint: {"right": 0.9, "top":0.85}
@@ -24,11 +22,15 @@
             hint_text: "Senha"
             pos_hint: {"right": 0.9, "top": 0.55}
             size_hint: 0.8, 0.1
-        Label:
-            text:"Faca seu login"
-            bold: True
-            markup: True
+        TextInput:
+            id:telefone
+            hint_text: "telefone"
             pos_hint: {"right": 0.9, "top": 0.4}
+            size_hint: 0.8, 0.1
+        TextInput:
+            id:nome
+            hint_text: "Nome"
+            pos_hint: {"right": 0.9, "top": 0.25}
             size_hint: 0.8, 0.1
         LabelButton:
             canvas.before:
@@ -36,19 +38,8 @@
                     pos: self.pos
                     size: self.size
                     source: "botao1.png" if self.state == "normal" else "botao2.png"
-            on_release: app.myfirebase.fazer_login(email.text, senha.text)
-            text: "Fazer login"
-            bold: True
-            pos_hint: {"right": 0.45, "top": 0.3}
-            size_hint: 0.4, 0.08
-        LabelButton:
-            canvas.before:
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-                    source: "botao1.png" if self.state == "normal" else "botao2.png"
-            on_release: app.mudar_tela("register_page")
+            on_release: app.myfirebase.criar_conta(email.text, senha.text, telefone.text, nome.text)
             text: "Registrar-se"
             bold: True
-            pos_hint: {"right": 0.95, "top": 0.3}
+            pos_hint: {"right": 0.7, "top": 0.10}
             size_hint: 0.4, 0.08
