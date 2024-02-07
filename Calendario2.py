@@ -51,9 +51,9 @@ class TimePicker(BoxLayout):
             time_button.bind(on_press=self.select_time)
             self.add_widget(time_button)
 
-        edit_button = Button(text="Editar Horários")
-        edit_button.bind(on_press=self.edit_times)
-        self.add_widget(edit_button)
+        # edit_button = Button(text="Editar Horários")
+        # edit_button.bind(on_press=self.edit_times)
+        # self.add_widget(edit_button)
 
     def select_time(self, instance):
         if instance.state == 'down':
@@ -189,7 +189,7 @@ class DatePicker(BoxLayout):
             popup = Popup(title=f"Horários disponíveis para {self.month_names[self.date.month - 1]} {day}, {self.date.year}",
                         content=popup_content, size_hint=(None, None), size=(400, 400))
             popup.open()
-    
+            
     def get_available_times(self, selected_day):
         bol = False
         print("entrando na func get_available_times")
@@ -224,7 +224,6 @@ class DatePicker(BoxLayout):
         horarios_disponiveis = list(Horario_split)
         bol = False
         return horarios_disponiveis, bol
-
     def select_time_for_day(self, instance, *args, **kwargs):
         day = kwargs['day']
         time = kwargs['time']
@@ -233,6 +232,10 @@ class DatePicker(BoxLayout):
             self.available_times[day].add(time)
         else:
             self.available_times[day].remove(time)
+        # if time in self.available_times[day]:
+        #     self.available_times[day].remove(time)
+        # else:
+        #     self.available_times[day].add(time)
 
     def move_next_month(self, *args, **kwargs):
         if self.date.month == 12:

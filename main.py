@@ -57,6 +57,11 @@ class MainApp(MDApp):
         local_id = self.local_id
         with open("local_id.txt", "w") as arquivo:
             arquivo.write(local_id)
+    def run_calendar2(self):
+        subprocess.Popen(['Python', "Calendario2.py"])
+        local_id = self.local_id
+        with open("local_id.txt", "w") as arquivo:
+            arquivo.write(local_id)
 
     def on_start(self):
         self.carregar_infos_usuario()   
