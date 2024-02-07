@@ -1,16 +1,18 @@
 <BoxFicha>:
     FloatLayout:
         canvas:
+            Color:
+                rgba: 188/255, 227/255, 217/255, 1
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: "bg2.jpg"
+                
         TextInput:
             id:ficha_paciente
             text: ""
             hint_text: "ficha"
             pos_hint: {"right": 0.9, "top": 0.8}
-            size_hint: 0.8, 0.5
+            size_hint: 0.8, 0.6
         LabelButton:
             canvas.before:
                 Rectangle:

@@ -1,10 +1,12 @@
 <TodasSessoes>:
     FloatLayout:
         canvas:
+            Color:
+                rgba: 188/255, 227/255, 217/255, 1
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: "bg2.jpg"
+                
         ScrollView:
             pos_hint: {"right": 1, "top": 0.75}
             size_hint: 1, 0.63
@@ -28,3 +30,4 @@
             on_release: app.mudar_tela("cancelar_sessao")
             pos_hint: {"right": 0.7, "top": 0.85}
             size_hint: 0.4, 0.08
+            color: 0, 0, 0, 1

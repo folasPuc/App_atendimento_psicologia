@@ -49,6 +49,8 @@ class ImageButton(ButtonBehavior,Image ):
 GUI= Builder.load_file('main.kv')
 class MainApp(MDApp):
     def build(self):
+        self.theme_cls.theme_style = 'Dark'
+        self.theme_cls.primary_palette = "BlueGray"
         self.myfirebase = MyFirebase()
         self.theme_cls = ThemeManager()
         return GUI

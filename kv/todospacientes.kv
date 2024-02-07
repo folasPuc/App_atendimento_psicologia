@@ -1,13 +1,16 @@
 <TodosPacientes>:
     FloatLayout:
         canvas:
+            Color:
+                rgba: 188/255, 227/255, 217/255, 1
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: "bg2.jpg"
+                
         ScrollView:
             pos_hint: {"right": 1, "top": 0.75}
             size_hint: 1, 0.63
+           
             GridLayout:
                 cols: 1
                 id: lista_pacientes
@@ -28,5 +31,6 @@
             on_release: app.mudar_tela("menuadmin")
             pos_hint: {"right": 0.25, "top": 0.17}
             size_hint: 0.4, 0.08
+
 
             
