@@ -13,9 +13,11 @@ from kivymd.app import ThemeManager
 from kivymd.app import MDApp
 import subprocess
 import requests
+import os
+import certifi
 import unicodedata
 
-
+os.environ["SSL_CERT_FILE"] = certifi.where()
 # coding: utf-8
 Window.size = (350,580)
 
