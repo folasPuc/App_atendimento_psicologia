@@ -33,10 +33,7 @@
                     pos: self.pos
             ImageButton:
                 source: "calendario_psico.png"
-                on_release: print("calendario")
+                on_release: app.run_calendar2()
             ImageButton:
-                source: "historico_psico.png"
-                on_release: print("historico")
-            ImageButton:
-                source: "ajustes_psico.png"
-                on_release: print("ajustes")
+                source: "voltar_icone.png"
+                on_release: app.mudar_tela("loginpage")
