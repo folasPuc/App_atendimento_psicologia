@@ -1,4 +1,4 @@
-<Menu>:
+<AlterarFicha>:
     FloatLayout:
         canvas:
             Color:
@@ -13,7 +13,7 @@
             bold: True
             markup: True
             pos_hint: {"right": 0.9, "top":0.85}
-            size_hint: 0.8, 0.2
+            size_hint: 0.8, 0.3
         Label:
             id: telefone_usuario
             text: "[b]Usuario_teste[/b]"
@@ -21,19 +21,19 @@
             markup: True
             pos_hint: {"right": 0.9, "top":0.65}
             size_hint: 0.8, 0.2
-        GridLayout:
-            rows: 1
-            pos_hint: {"right": 1, "top": 0.12}
-            size_hint: 1, 0.12
-            canvas:
-                Color:
-                    rgb: utils.get_color_from_hex("#00607E")
+        LabelButton:
+            canvas.before:
                 Rectangle:
-                    size: self.size
                     pos: self.pos
-            ImageButton:
-                source: "calendario_psico.png"
-                on_release: app.run_calendar2()
-            ImageButton:
-                source: "voltar_icone.png"
-                on_release: app.mudar_tela("loginpage")
+                    size: self.size
+                    source: "botao1.png" if self.state == "normal" else "botao2.png"
+            on_release: app.carregar_ficha()
+            text: "Alterar ficha do paciente"
+            bold: True
+            pos_hint: {"right": 0.7, "top": 0.1}
+            size_hint: 0.4, 0.08
+        ImageButton:
+            source: "voltar_icone.png"
+            on_release: app.mudar_tela("procurarpaciente")
+            pos_hint: {"right": 0.25, "top": 0.17}
+            size_hint: 0.4, 0.08

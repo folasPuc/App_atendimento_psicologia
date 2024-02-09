@@ -1,0 +1,31 @@
+<CancelarSessao>:
+    FloatLayout:
+        canvas:
+            Color:
+                rgba: 188/255, 227/255, 217/255, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                
+        TextInput:
+            id: cancelar_sessao
+            text: ""
+            hint_text: "Digite o nome do paciente que deseja remover a sessao: "
+            pos_hint: {"right": 0.9, "top": 0.7}
+            size_hint: 0.8, 0.2
+        LabelButton:
+            canvas.before:
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                    source: "botao1.png" if self.state == "normal" else "botao2.png"
+            on_release: app.cancelar_sessao(cancelar_sessao.text)
+            text: "Cancelar sessao"
+            bold: True
+            pos_hint: {"right": 0.7, "top": 0.3}
+            size_hint: 0.4, 0.08
+        ImageButton:
+            source: "voltar_icone.png"
+            on_release: app.voltar("todas_sessoes")
+            pos_hint: {"right": 0.25, "top": 0.17}
+            size_hint: 0.4, 0.08

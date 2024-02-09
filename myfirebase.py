@@ -3,7 +3,7 @@ from kivy.app import App
 
 class MyFirebase():
     API_KEY = "AIzaSyCdU0vkGss9PYj8fCUtEq2HWwnfO7y5ESI"
-    def criar_conta(self, email, senha, telefone):
+    def criar_conta(self, email, senha, telefone, nome):
         link = f"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={self.API_KEY}"
         info = {"email": email, "password": senha, "returnSecureToken": True}
         print(email, senha)
@@ -27,7 +27,7 @@ class MyFirebase():
 
             
             link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/{local_id}.json"
-            info_usuario = f'{{"minhas_sessoes": "", "email": "{email}", "telefone": "{telefone}", "ficha": ""}}'
+            info_usuario = f'{{"minhas_sessoes": "", "email": "{email}", "telefone": "{telefone}", "nome": "{nome}", "ficha": ""}}'
             requisicao_usuario = requests.patch(link, data = info_usuario)
             meu_aplicativo.carregar_infos_usuario()
             meu_aplicativo.mudar_tela("menu")
@@ -63,15 +63,17 @@ class MyFirebase():
                 arquivo.write(refresh_token)
 
             meu_aplicativo.carregar_infos_usuario()
-            if email == "admin@gmail.com":
+            if email == "adminpsico1@gmail.com":
+                meu_aplicativo.alterar_informacao(email)
                 meu_aplicativo.mudar_tela("menuadmin")
             else:
+                meu_aplicativo.alterar_informacao(email)
                 meu_aplicativo.mudar_tela("menu")
 
         else:
             mensagem_erro = requisicao_dic["error"]["message"]
-            # mensagem_erro = mensagem_erro.replace("MISSING_PASSWORD", "Senha inválida")
-            # aqui coloca a traducao
+            mensagem_erro = mensagem_erro.replace("MISSING_PASSWORD", "Senha inválida")
+            mensagem_erro = mensagem_erro.replace("INVALID_EMAIL", "Email inválido")
             meu_aplicativo = App.get_running_app()
             pagina_login = meu_aplicativo.root.ids["loginpage"]
             pagina_login.ids["mensagem_login"].text=mensagem_erro

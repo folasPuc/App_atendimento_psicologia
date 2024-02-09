@@ -1,10 +1,13 @@
 <MenuAdmin>:
     FloatLayout:
         canvas:
+            Color:
+                rgba: 188/255, 227/255, 217/255, 1
+        
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: "bg2.jpg"
+                
         Label:
             id: email_usuario
             text: "[b]Usuario_teste[/b]"
@@ -25,19 +28,19 @@
             size_hint: 1, 0.12
             canvas:
                 Color:
-                    rgb: utils.get_color_from_hex("#00607E")
+                    rgba: 188/255, 227/255, 217/255, 1
                 Rectangle:
                     size: self.size
                     pos: self.pos
             ImageButton:
                 source: "historico_psico.png"
-                on_release: print("marcar_horarios")
+                on_release: app.carregar_sessoes()
             ImageButton:
                 source: "calendario_psico.png"
-                on_release: print("sessoes marcadas")
+                on_release: app.run_calendar()
             ImageButton:
                 source: "ficha_psico.png"
                 on_release: app.carregar_pacientes()
             ImageButton:
-                source: "ajustes_psico.png"
-                on_release: print("ajustes_adm")
+                source: "voltar_icone.png"
+                on_release: app.mudar_tela("loginpage")

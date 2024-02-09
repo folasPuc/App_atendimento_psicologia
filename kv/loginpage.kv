@@ -1,58 +1,65 @@
 <LoginPage>:   
     FloatLayout:
         canvas:
+            Color:
+                rgba: 188/255, 227/255, 217/255, 1
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: "bg2.jpg"
+                #edita a parte de baixo
+        
         Label:
             id: mensagem_login
-            text: "A imaginação é a ponte entre a mente consciente e a mente inconsciente."
-            bold: True
-            markup: True
-            pos_hint: {"right": 0.9, "top":0.85}
-            size_hint: 0.8, 0.2
+            text: "Logue para continuar"           
+            font_size: "20sp"
+            font_name: "Poppins-Regular.ttf"
+            pos_hint: {"center_x": .32, "center_y": .97}
+            color: 115/255, 153/255, 141/255, 1
+        
         TextInput:
             id:email
             hint_text: "E-mail"
             pos_hint: {"right": 0.9, "top": 0.7}
             size_hint: 0.8, 0.1
+        Image: 
+            source: "mail.png"     
+            pos_hint: {"center_x": .8, "center_y": .65}
+            size_hint: .1, .1
         TextInput:
             id:senha
             hint_text: "Senha"
             pos_hint: {"right": 0.9, "top": 0.55}
             size_hint: 0.8, 0.1
-        TextInput:
-            id:telefone
-            hint_text: "telefone"
-            pos_hint: {"right": 0.9, "top": 0.4}
-            size_hint: 0.8, 0.1
-        Label:
-            text:"Faca seu login"
-            bold: True
-            markup: True
-            pos_hint: {"right": 0.9, "top": 0.4}
-            size_hint: 0.8, 0.1
+        Image: 
+            source: "key.png"     
+            pos_hint: {"center_x": .8, "center_y": .50}
+            size_hint: .1, .1
         LabelButton:
             canvas.before:
-                Rectangle:
-                    pos: self.pos
+                Color: 
+                    rgb: 25/255, 38/255, 35/255, 1
+                RoundedRectangle:
                     size: self.size
-                    source: "botao1.png" if self.state == "normal" else "botao2.png"
+                    pos: self.pos
+                    radius: [2]
             on_release: app.myfirebase.fazer_login(email.text, senha.text)
             text: "Fazer login"
-            bold: True
-            pos_hint: {"right": 0.45, "top": 0.3}
-            size_hint: 0.4, 0.08
+            background_color: 0, 0, 0, 0
+            font_name: "Poppins-Medium.ttf"
+            size_hint: .79, .065
+            pos_hint: {"center_x": .5, "center_y": .27} 
         LabelButton:
             canvas.before:
-                Rectangle:
-                    pos: self.pos
+                Color: 
+                    rgb: 50/255, 66/255, 63/255, 1
+                RoundedRectangle:
                     size: self.size
-                    source: "botao1.png" if self.state == "normal" else "botao2.png"
-            on_release: app.myfirebase.criar_conta(email.text, senha.text, telefone.text)
+                    pos: self.pos
+                    radius: [2]
+            on_release: app.mudar_tela("register_page")
             text: "Registrar-se"
-            bold: True
-            pos_hint: {"right": 0.95, "top": 0.3}
-            size_hint: 0.4, 0.08
-        
+            background_color: 0, 0, 0, 0
+            font_name: "Poppins-Medium.ttf"
+            size_hint: .79, .065
+            pos_hint: {"center_x": .5, "center_y": .18}
+            on_press: app.root.current = 'register' 

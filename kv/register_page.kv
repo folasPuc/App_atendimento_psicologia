@@ -1,0 +1,71 @@
+<RegisterPage>:   
+    FloatLayout:
+        canvas:
+            Color:
+                rgba: 188/255, 227/255, 217/255, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        LabelButton:
+            icon: "chevron-left"
+            user_font_size: "35sp"
+            pos_hint: {"center_y": .95}
+        GridLayout:
+            rows: 1
+            pos_hint: {"right": 1, "top": 0.12}
+            size_hint: 1, 0.12
+            canvas:
+                Color:
+                    rgba: 188/255, 227/255, 217/255, 1
+                
+            ImageButton:
+                source: "voltar_icone.png"
+                on_release: app.mudar_tela("loginpage")
+                
+        TextInput:
+            id:email
+            hint_text: "E-mail"
+            pos_hint: {"right": 0.9, "top": 0.9}
+            size_hint: 0.8, 0.1
+        Image: 
+            source: "mail.png"     
+            pos_hint: {"center_x": .8, "center_y": .85}
+            size_hint: .1, .1
+        TextInput:
+            id:senha
+            hint_text: "Senha"
+            pos_hint: {"right": 0.9, "top": 0.75}
+            size_hint: 0.8, 0.1
+        Image: 
+            source: "key.png"     
+            pos_hint: {"center_x": .8, "center_y": .70}
+            size_hint: .1, .1
+        TextInput:
+            id:telefone
+            hint_text: "telefone"
+            pos_hint: {"right": 0.9, "top": 0.60}
+            size_hint: 0.8, 0.1
+        Image: 
+            source: "telefone.png"     
+            pos_hint: {"center_x": .8, "center_y": .55}
+            size_hint: .1, .1
+        TextInput:
+            id:nome
+            hint_text: "Nome"
+            pos_hint: {"right": 0.9, "top": 0.45}
+            size_hint: 0.8, 0.1
+        Image: 
+            source: "nome.png"     
+            pos_hint: {"center_x": .8, "center_y": .40}
+            size_hint: .1, .1
+        LabelButton:
+            canvas.before:
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                    source: "botao1.png" if self.state == "normal" else "botao2.png"
+            on_release: app.myfirebase.criar_conta(email.text, senha.text, telefone.text, nome.text)
+            text: "Registrar-se"
+            bold: True
+            pos_hint: {"right": 0.7, "top": 0.3}
+            size_hint: 0.4, 0.08

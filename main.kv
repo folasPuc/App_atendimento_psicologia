@@ -2,20 +2,35 @@
 #:include kv/menu.kv
 #:include kv/menuadmin.kv
 #:include kv/todospacientes.kv
+#:include kv/procurarpaciente.kv
+#:include kv/alterar_ficha.kv
+#:include kv/box_ficha.kv
+#:include kv/todas_sessoes.kv
+#:include kv/cancelar_sessao.kv
+#:include kv/register_page.kv
 #:import utils kivy.utils
-
 
 
 FloatLayout:
     canvas:
+        Color:
+            rgba: 188/255, 227/255, 217/255, 1
         Rectangle:
             size: self.size
             pos: self.pos
-            source: "bg2.jpg"
+        
+            #imagem de cima
     Image:
-        pos_hint: {"right": 1, "top": 0.9}
-        size_hint: 1, 0.2
-        source: "logo_psico.png"
+        size_hint: .3, .3
+        pos_hint: {"center_x": .25, "center_y": .86}
+        source: "doc3.png"
+    Label:
+        text: "Bem-vindo!"
+        font_size: "28sp"
+        font_name: "Poppins-SemiBold.ttf"
+        pos_hint: {"center_x": .25, "center_y": .73}
+        color: 0, 0, 0, 1
+
     ScreenManager:
         pos_hint: {"right": 1, "top": 0.7}
         size_hint: 1, 0.7
@@ -32,6 +47,24 @@ FloatLayout:
         TodosPacientes:
             name: "todospacientes"
             id: todospacientes
-
+        ProcurarPaciente:
+            name: "procurarpaciente"
+            id: procurarpaciente
+        AlterarFicha:
+            name: "alterar_ficha"
+            id: alterar_ficha
+        BoxFicha:
+            name: "box_ficha"
+            id: box_ficha
+        TodasSessoes:
+            name: "todas_sessoes"
+            id: todas_sessoes
+        CancelarSessao:
+            name: "cancelar_sessao"
+            id: cancelar_sessao
+        RegisterPage:
+            name: "register_page"
+            id: register_page
+        
     
 
