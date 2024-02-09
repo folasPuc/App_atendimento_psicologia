@@ -137,32 +137,93 @@ class DatePicker(BoxLayout):
 
         while date_cursor.month == self.date.month:
             date_button = Button(text=str(date_cursor.day))
-            date_button.bind(on_press=partial(self.show_available_times, day=date_cursor.day))
+            date_button.bind(on_press=partial(self.show_available_times, day=date_cursor.day, month = date_cursor.month, year = date_cursor.year))
             self.body.add_widget(date_button)
             date_cursor += timedelta(days=1)
 
     def show_available_times(self, instance, *args, **kwargs):
         day = kwargs['day']
+        month = kwargs['month']
+        year = kwargs['year']
+        print(day, month, year)
+        selected_date = f"{year}-{month:02d}-{day:02d}"
+        print(selected_date)
         self.selected_day = day  # Store the selected day
+
+        available_times_for_day, bol = self.get_available_times(selected_date)
+
+        print(f"available_times_for_day e bol aqui: {available_times_for_day, bol}")
+
         if day not in self.available_times:
             self.available_times[day] = set()
+            print(f" available_times[day]: {self.available_times[day]}")
 
         popup_content = GridLayout(cols=3, spacing=5)
+        if bol == True:
+            for time in available_times_for_day:
+                time_button = Button(text=time)
+                time_button.bind(on_press=partial(self.select_time_for_day, day=day, time=time))
+                if time in self.available_times[day]:
+                    time_button.state = 'down'
+                popup_content.add_widget(time_button)
 
-        for time in self.time_picker.times:
-            time_button = Button(text=time)
-            time_button.bind(on_press=partial(self.select_time_for_day, day=day, time=time))
-            if time in self.available_times[day]:
-                time_button.state = 'down'
-            popup_content.add_widget(time_button)
+            confirm_button = Button(text="Confirmar Consulta")
+            confirm_button.bind(on_press=self.confirm_appointment)
+            popup_content.add_widget(confirm_button)
 
-        confirm_button = Button(text="Confirmar Consulta")
-        confirm_button.bind(on_press=self.confirm_appointment)
-        popup_content.add_widget(confirm_button)
+            popup = Popup(title=f"Horários disponíveis para {self.month_names[self.date.month - 1]} {day}, {self.date.year}",
+                        content=popup_content, size_hint=(None, None), size=(400, 400))
+            popup.open()
+        elif bol == False:
+            for time in self.time_picker.times:
+                time_button = Button(text=time)
+                time_button.bind(on_press=partial(self.select_time_for_day, day=day, time=time))
+                if time in self.available_times[day]:
+                    time_button.state = 'down'
+                popup_content.add_widget(time_button)
 
-        popup = Popup(title=f"Horários disponíveis para {self.month_names[self.date.month - 1]} {day}, {self.date.year}",
-                      content=popup_content, size_hint=(None, None), size=(400, 400))
-        popup.open()
+            confirm_button = Button(text="Confirmar Consulta")
+            confirm_button.bind(on_press=self.confirm_appointment)
+            popup_content.add_widget(confirm_button)
+
+            popup = Popup(title=f"Horários disponíveis para {self.month_names[self.date.month - 1]} {day}, {self.date.year}",
+                        content=popup_content, size_hint=(None, None), size=(400, 400))
+            popup.open()
+    
+    def get_available_times(self, selected_day):
+        bol = False
+        print("entrando na func get_available_times")
+        print(f"data selecionada: {selected_day}")
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Horarios.json"
+        req = requests.get(link)
+        requisicao_dic = req.json()
+        Horario = requisicao_dic['Horarios']
+        Horario_split = Horario.split(',')
+        #[horario.strip() for horario in Horario.split(',')]
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        print(requisicao_dic)
+        print(f"Horarios da medica {Horario_split}")
+        for local_id_usuario in requisicao_dic:
+            usuario_info = requisicao_dic[local_id_usuario]
+            print(usuario_info)
+            if isinstance(usuario_info, dict):
+                Data = usuario_info.get('Data')
+                if selected_day == Data:
+                    Hora = usuario_info.get('Hora')
+                    bol = True
+                    print("data encontrada no banco: ")
+                    print(f"Horarios marcados: {Hora}")
+                    horarios_disponiveis = [horario for horario in Horario_split if horario not in Hora]
+                    print(f"horarios disponiveis no if (diferente dos da medica) {horarios_disponiveis}")
+                    return horarios_disponiveis, bol
+                else:
+                    print("entrando no else")
+                    print(f"horarios disponiveis no else (igual os da medica): {Horario_split}")
+        horarios_disponiveis = list(Horario_split)
+        bol = False
+        return horarios_disponiveis, bol
 
     def select_time_for_day(self, instance, *args, **kwargs):
         day = kwargs['day']
@@ -199,21 +260,17 @@ class DatePicker(BoxLayout):
         with open("local_id.txt", "r") as arquivo:
             local_id = arquivo.read()
         selected_times_str = selected_times
-        
-        # print(str_array)
-        # data = {str_array: ""}
-        # json_data = json.dumps(data)
+        print(selected_times_str)
+        print(type(selected_times_str))
+        if not selected_times_str:
+            print("selected_times chegou como vazio")
+            popup = Popup(title=f"Nao ha horarios disponiveis para esse dia! Escolha outro dia.",
+            size_hint=(None, None), size=(200, 200))
+            popup.open()
+            return
+        else:
+            pass
 
-        # link = "https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
-        # info_usuario = f'{{"email": "{email}"}}'
-        # req = requests.patch(link, data = info_usuario)
-        # req_dic = req.json()
-        
-        # link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes/{email}.json"
-        # info_usuario = f'{{"minhas_sessoes": "", "Dia": "{selected_data_str}", "Horario": "{selected_times_str}", "ficha": ""}}'
-        # req = requests.patch(link, data = info_usuario)
-        # req_dic = req.json()
-        # print(req_dic)
         link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
         info_dia = f'{{"{local_id}": ""}}'
         req = requests.patch(link, data = info_dia)
@@ -224,53 +281,11 @@ class DatePicker(BoxLayout):
         req = requests.patch(link, data = info_dia)
         req_dic = req.json()
         print(req_dic)
+        print(selected_times_str)
         
-
-
-        # screen_manager = app.root
-        # menu_screen = screen_manager.get_screen('menu')  # Substitua 'menu' pelo nome da tela Menu no ScreenManager
-        # email = menu_screen.ids.menu.email_usuario
-        # print(email)
-        # Add further logic to handle the confirmation, e.g., update a database, etc.
-        # selected_times_str = str(selected_times)
-        # link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Dias.json"
-        # info_dia = f'{{"{selected_date}": ""}}'
-        # requests.patch(link, data = info_dia)
-        # selected_times_str = [str(time) for time in selected_times]
-        # selected_times_str_combined = ', '.join(selected_times_str)
-        # print(selected_times_str_combined)
-        # link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Dias/{selected_date}.json"
-        # info_dia = f'{{"Horarios": "{selected_times_str_combined}"}}'
-        # req = requests.patch(link, data = info_dia)
-        # req_dic = req.json()
-        # print(req_dic)
-
-
-        # selected_times_str = [str(time) for time in selected_times]
-        # selected_times_str_combined = ', '.join(selected_times_str)
-        # selected_data_str = [str(data) for data in selected_date]
-        # selected_data_str_combined = ', '.join(selected_data_str)
-        # print(selected_data_str_combined, selected_times_str_combined, email)
-
-
-
-
-
-        # #testando pegar horarios
-        # link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Dias.json"
-        # requisicao = requests.get(link)
-        # requisicao_dic = requisicao.json()
-        # print(requisicao_dic)
-        # print("testando pegar datas")
-        # for dia in requisicao_dic:
-        #     dia_user = requisicao_dic[dia]
-        #     if isinstance(dia_user, dict):
-        #         if dia_user.get('Horarios') is not None:
-        #             horario_dia = dia_user.get('Horarios')
-        #             info_consulta = {"Dia": dia, "Horarios": horario_dia}
-        #             print(info_consulta)
-        #         else:
-        #             pass
+        popup = Popup(title=f"Obrigado {email}! Sua sessao foi marcada para {selected_date} as {selected_times_str}",
+                         size_hint=(None, None), size=(200, 200))
+        popup.open()
 
 class MyApp(App):
     def build(self):
