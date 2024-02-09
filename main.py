@@ -8,6 +8,7 @@ from myfirebase import MyFirebase
 from kivymd.uix.pickers import MDDatePicker
 from clientes import Clientes
 from sessoes import Sessoes
+from horarios import Horarios
 from kivy.core.window import Window
 from kivymd.app import ThemeManager
 from kivymd.app import MDApp
@@ -41,10 +42,13 @@ class TodasSessoes(Screen):
     pass
 class CancelarSessao(Screen):
     pass
+class MarcarConsulta(Screen):
+    pass
 class LabelButton(ButtonBehavior,Label ):
     pass
 class ImageButton(ButtonBehavior,Image ):
     pass
+
 
    
 
@@ -67,6 +71,7 @@ class MainApp(MDApp):
     def on_save2(self, instance, value, date_range):
         selected_date = str(value)
         print(f"Voce marcou a sessao para dia {selected_date}")
+        self.get_available_times(selected_date)
 
     def on_cancel2(self, instance, value):
         self.ids.data.text = "Você cliclou em cancelar"
@@ -95,12 +100,68 @@ class MainApp(MDApp):
                     print(f"Horarios marcados: {Hora}")
                     horarios_disponiveis = [horario for horario in Horario_split if horario not in Hora]
                     print(f"horarios disponiveis no if (diferente dos da medica) {horarios_disponiveis}")
-                    return
+                    horarios_disponiveis_str = str(horarios_disponiveis)
+                    horarios_disponiveis_lista = horarios_disponiveis_str.split(',')
+                    for hora in horarios_disponiveis_lista:
+                        horarios = Horarios(horarios = hora)
+                        marcar_consulta = self.root.ids["marcar_consulta"]
+                        lista_pacientes = marcar_consulta.ids["lista_horarios"]
+                        lista_pacientes.add_widget(horarios)
+                    self.root.ids.marcar_consulta.ids.data_select.text = selected_day
+                    self.mudar_tela("marcar_consulta")
+                    return horarios_disponiveis_str
                 else:
                     print("entrando no else")
                     print(f"horarios disponiveis no else (igual os da medica): {Horario_split}")
         horarios_disponiveis = list(Horario_split)
         print(f"Horario final (nao achou o dia no banco: {horarios_disponiveis})")
+        horarios_disponiveis_str = str(horarios_disponiveis)
+        horarios_disponiveis_lista = horarios_disponiveis_str.split(',')
+        for hora in horarios_disponiveis_lista:
+            horarios = Horarios(horarios = hora)
+            marcar_consulta = self.root.ids["marcar_consulta"]
+            lista_pacientes = marcar_consulta.ids["lista_horarios"]
+            lista_pacientes.add_widget(horarios)
+        self.root.ids.marcar_consulta.ids.data_select.text = selected_day
+        self.mudar_tela("marcar_consulta")
+        return horarios_disponiveis_str
+    
+    def get_available_times2(self, selected_day):
+        print("entrando na func get_available_times")
+        print(f"data selecionada: {selected_day}")
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Horarios.json"
+        req = requests.get(link)
+        requisicao_dic = req.json()
+        Horario = requisicao_dic['Horarios']
+        Horario_split = Horario.split(',')
+        #[horario.strip() for horario in Horario.split(',')]
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        print(requisicao_dic)
+        print(f"Horarios da medica {Horario_split}")
+        for local_id_usuario in requisicao_dic:
+            usuario_info = requisicao_dic[local_id_usuario]
+            print(usuario_info)
+            if isinstance(usuario_info, dict):
+                Data = usuario_info.get('Data')
+                if selected_day == Data:
+                    Hora = usuario_info.get('Hora')
+                    print("data encontrada no banco: ")
+                    print(f"Horarios marcados: {Hora}")
+                    horarios_disponiveis = [horario for horario in Horario_split if horario not in Hora]
+                    print(f"horarios disponiveis no if (diferente dos da medica) {horarios_disponiveis}")
+                    horarios_disponiveis_str = str(horarios_disponiveis)
+                    horarios_disponiveis_lista = horarios_disponiveis_str.split(',')
+                    return horarios_disponiveis_str
+                else:
+                    print("entrando no else")
+                    print(f"horarios disponiveis no else (igual os da medica): {Horario_split}")
+        horarios_disponiveis = list(Horario_split)
+        print(f"Horario final (nao achou o dia no banco: {horarios_disponiveis})")
+        horarios_disponiveis_str = str(horarios_disponiveis)
+        horarios_disponiveis_lista = horarios_disponiveis_str.split(',')
+        return horarios_disponiveis_str
     def run_calendar2(self):
         subprocess.Popen(['Python', "Calendario2.py"])
         local_id = self.local_id
@@ -301,6 +362,41 @@ class MainApp(MDApp):
         requisicao = requests.delete(link)
         req_dic = requisicao.json()
         print(req_dic)
+    def validar_marcar(self, horario_input, selected_date):
+        horarios_array = self.get_available_times2(selected_date)
+        print(horarios_array)
+        print(horario_input)
+        if horario_input in horarios_array:
+            print(f'O horário {horario_input} está na lista.')
+            self.confirm_appoint(selected_date, horario_input)
+        else:
+            print(f'O horário {horario_input} não está na lista.')
+    def confirm_appoint(self, dia, horario):
+        horario_input = str(horario)
+        local_id_func = self.local_id
+        nome = self.root.ids.menuadmin.ids.email_usuario.text
+        lista_horario = horario_input.split(',')
+        print(f"Horario cru: {horario}")
+        print(f"Horario input: {horario_input}")
+        print(f"Horario lista: {lista_horario}")
+        print(f"local_id: {local_id_func}")
+        print(f"nome: {nome}")
+        print(f"dia: {dia}")
+
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
+        info_dia = f'{{"{local_id_func}": ""}}'
+        req = requests.patch(link, data = info_dia)
+        req_dic = req.json()
+
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes/{local_id_func}.json"
+        info_dia = f'{{"Nome": "{nome}", "Data": "{dia}", "Hora": "{lista_horario}"}}'
+        req = requests.patch(link, data = info_dia)
+        req_dic = req.json()
+        print(req_dic)
+
+        print("marcado com sucesso!")
+
+        pass
 
 
 MainApp().run()

@@ -1,0 +1,55 @@
+<MarcarConsulta>:   
+    FloatLayout:
+        canvas:
+            Color:
+                rgba: 188/255, 227/255, 217/255, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                #edita a parte de baixo
+        ScrollView:
+            pos_hint: {"right": 1, "top": 0.35}
+            size_hint: 1, 0.63
+           
+            GridLayout:
+                cols: 1
+                id: lista_horarios
+
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: "90dp"
+                row_force_default: True
+        
+        Label:
+            id:horario_texto
+            text: "Selecione um Horario"           
+            font_size: "20sp"
+            font_name: "Poppins-Regular.ttf"
+            pos_hint: {"center_x": .32, "center_y": .97}
+            color: 115/255, 153/255, 141/255, 1
+        
+        TextInput:
+            id:horario_input
+            hint_text: "Horario (ex: ['9:00 AM', '10:00 AM'])"
+            pos_hint: {"right": 0.9, "top": 0.85}
+            size_hint: 0.8, 0.1
+        Label:
+            id:data_select
+            text: "aaaa"
+            pos_hint: {"right": 0.9, "top": 0.75}
+            size_hint: 0.8, 0.1
+
+        LabelButton:
+            canvas.before:
+                Color: 
+                    rgb: 25/255, 38/255, 35/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [2]
+            on_release: app.validar_marcar(horario_input.text, data_select.text)
+            text: "Marcar consulta"
+            background_color: 0, 0, 0, 0
+            font_name: "Poppins-Medium.ttf"
+            size_hint: .79, .065
+            pos_hint: {"center_x": .5, "center_y": .5} 
