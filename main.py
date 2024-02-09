@@ -57,10 +57,50 @@ class MainApp(MDApp):
         self.theme_cls = ThemeManager()
         return GUI
     def run_calendar(self):
-        subprocess.Popen(['Python', "Calendario.py"])
+        date_dialog = MDDatePicker(year=2024, month=1, day=17)
+        date_dialog.bind(on_save=self.on_save2, on_cancel=self.on_cancel2)
+        date_dialog.open()
         local_id = self.local_id
+    
         with open("local_id.txt", "w") as arquivo:
             arquivo.write(local_id)
+    def on_save2(self, instance, value, date_range):
+        selected_date = str(value)
+        print(f"Voce marcou a sessao para dia {selected_date}")
+
+    def on_cancel2(self, instance, value):
+        self.ids.data.text = "Você cliclou em cancelar"
+    def get_available_times(self, selected_day):
+        print("entrando na func get_available_times")
+        print(f"data selecionada: {selected_day}")
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Horarios.json"
+        req = requests.get(link)
+        requisicao_dic = req.json()
+        Horario = requisicao_dic['Horarios']
+        Horario_split = Horario.split(',')
+        #[horario.strip() for horario in Horario.split(',')]
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
+        requisicao = requests.get(link)
+        requisicao_dic = requisicao.json()
+        print(requisicao_dic)
+        print(f"Horarios da medica {Horario_split}")
+        for local_id_usuario in requisicao_dic:
+            usuario_info = requisicao_dic[local_id_usuario]
+            print(usuario_info)
+            if isinstance(usuario_info, dict):
+                Data = usuario_info.get('Data')
+                if selected_day == Data:
+                    Hora = usuario_info.get('Hora')
+                    print("data encontrada no banco: ")
+                    print(f"Horarios marcados: {Hora}")
+                    horarios_disponiveis = [horario for horario in Horario_split if horario not in Hora]
+                    print(f"horarios disponiveis no if (diferente dos da medica) {horarios_disponiveis}")
+                    return
+                else:
+                    print("entrando no else")
+                    print(f"horarios disponiveis no else (igual os da medica): {Horario_split}")
+        horarios_disponiveis = list(Horario_split)
+        print(f"Horario final (nao achou o dia no banco: {horarios_disponiveis})")
     def run_calendar2(self):
         subprocess.Popen(['Python', "Calendario2.py"])
         local_id = self.local_id
