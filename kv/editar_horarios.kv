@@ -1,4 +1,4 @@
-<AlterarFicha>:
+<EditarHorarios>:
     FloatLayout:
         canvas:
             Color:
@@ -7,33 +7,30 @@
                 size: self.size
                 pos: self.pos
                 
-        Label:
-            id: email_usuario
+        TextInput:
+            id:horarios_psico
             text: ""
-            bold: True
-            markup: True
-            pos_hint: {"right": 0.9, "top":0.85}
-            size_hint: 0.8, 0.3
-        Label:
-            id: telefone_usuario
-            text: ""
-            bold: True
-            markup: True
-            pos_hint: {"right": 0.9, "top":0.65}
-            size_hint: 0.8, 0.2
+            hint_text: "9:00 AM, 10:00 PM"
+            pos_hint: {"right": 0.9, "top": 0.8}
+            size_hint: 0.8, 0.6
         LabelButton:
             canvas.before:
                 Rectangle:
                     pos: self.pos
                     size: self.size
                     source: "botao1.png" if self.state == "normal" else "botao2.png"
-            on_release: app.carregar_ficha()
-            text: "Alterar ficha do paciente"
+            on_release: app.atualizar_horarios()
+            text: "Salvar alteracoes nos horarios"
             bold: True
-            pos_hint: {"right": 0.7, "top": 0.1}
+            pos_hint: {"right": 0.7, "top": 0.18}
             size_hint: 0.4, 0.08
         ImageButton:
             source: "voltar_icone.png"
-            on_release: app.mudar_tela("procurarpaciente")
+            on_release: app.mudar_tela("menuadmin")
             pos_hint: {"right": 0.25, "top": 0.17}
+            size_hint: 0.4, 0.08
+        Label:
+            id:status
+            text: ""
+            pos_hint: {"right": 0.7, "top": 0.9}
             size_hint: 0.4, 0.08

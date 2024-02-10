@@ -10,7 +10,7 @@
         TextInput:
             id:ficha_paciente
             text: ""
-            hint_text: "ficha"
+            hint_text: "Ficha"
             pos_hint: {"right": 0.9, "top": 0.8}
             size_hint: 0.8, 0.6
         LabelButton:
@@ -28,4 +28,9 @@
             source: "voltar_icone.png"
             on_release: app.mudar_tela("alterar_ficha")
             pos_hint: {"right": 0.25, "top": 0.17}
+            size_hint: 0.4, 0.08
+        Label:
+            id:status
+            text: ""
+            pos_hint: {"right": 0.7, "top": 0.9}
             size_hint: 0.4, 0.08

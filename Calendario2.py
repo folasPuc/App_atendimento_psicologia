@@ -284,7 +284,7 @@ class DatePicker(BoxLayout):
         req = requests.patch(link, data = info_dia)
         req_dic = req.json()
         print(req_dic)
-        print(selected_times_str)
+        print(f"selected times penis: {selected_times_str}")
         
         popup = Popup(title=f"Obrigado {email}! Sua sessao foi marcada para {selected_date} as {selected_times_str}",
                          size_hint=(None, None), size=(200, 200))
