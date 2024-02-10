@@ -274,16 +274,16 @@ class DatePicker(BoxLayout):
         else:
             pass
 
-        # link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
-        # info_dia = f'{{"{local_id}": ""}}'
-        # req = requests.patch(link, data = info_dia)
-        # req_dic = req.json()
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes.json"
+        info_dia = f'{{"{local_id}": ""}}'
+        req = requests.patch(link, data = info_dia)
+        req_dic = req.json()
 
-        # link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes/{local_id}.json"
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Sessoes/{local_id}.json"
         info_dia = f'{{"Nome": "{email}", "Data": "{selected_date}", "Hora": "{selected_times_str}"}}'
-        # req = requests.patch(link, data = info_dia)
-        # req_dic = req.json()
-        # print(req_dic)
+        req = requests.patch(link, data = info_dia)
+        req_dic = req.json()
+        print(req_dic)
         print(f"selected times penis: {selected_times_str}")
         
         popup = Popup(title=f"Obrigado {email}! Sua sessao foi marcada para {selected_date} as {selected_times_str}",

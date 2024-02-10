@@ -30,7 +30,7 @@
         
         TextInput:
             id:horario_input
-            hint_text: "Horario (ex: ['9:00 AM', '10:00 AM'])"
+            hint_text: "Horario (ex: 9:00 AM)"
             pos_hint: {"right": 0.9, "top": 0.85}
             size_hint: 0.8, 0.1
         Label:
@@ -52,4 +52,14 @@
             background_color: 0, 0, 0, 0
             font_name: "Poppins-Medium.ttf"
             size_hint: .79, .065
-            pos_hint: {"center_x": .5, "center_y": .5} 
+            pos_hint: {"center_x": .5, "center_y": .5}
+        ImageButton:
+            source: "voltar_icone.png"
+            on_release: app.mudar_tela("menu")
+            pos_hint: {"right": 0.25, "top": 0.17}
+            size_hint: 0.4, 0.08
+        Label:
+            id:status
+            text: ""
+            pos_hint: {"right": 0.7, "top": 0.7}
+            size_hint: 0.4, 0.08

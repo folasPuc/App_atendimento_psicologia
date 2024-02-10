@@ -44,6 +44,8 @@ class CancelarSessao(Screen):
     pass
 class MarcarConsulta(Screen):
     pass
+class EditarHorarios(Screen):
+    pass
 class LabelButton(ButtonBehavior,Label ):
     pass
 class ImageButton(ButtonBehavior,Image ):
@@ -74,8 +76,11 @@ class MainApp(MDApp):
         self.get_available_times(selected_date)
 
     def on_cancel2(self, instance, value):
-        self.ids.data.text = "Você cliclou em cancelar"
+        pass
     def get_available_times(self, selected_day):
+        lista_remover_horarios = self.root.ids.marcar_consulta.ids.lista_horarios
+        for item in list(lista_remover_horarios.children):
+            lista_remover_horarios.remove_widget(item)
         print("entrando na func get_available_times")
         print(f"data selecionada: {selected_day}")
         link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Horarios.json"
@@ -212,16 +217,16 @@ class MainApp(MDApp):
             nome = requisicao_dic["nome"]
             email = requisicao_dic["email"]
             telefone = requisicao_dic["telefone"]
-            email_user = self.root.ids.menu.ids.email_usuario.text = "[b]Email:[/b] {}".format(nome)
-            tel_user = self.root.ids.menu.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
+            email_user = self.root.ids.menu.ids.email_usuario.text = nome
+            tel_user = self.root.ids.menu.ids.telefone_usuario.text = telefone
             if email == "adminpsico1@gmail.com":
-                email_user = self.root.ids.menuadmin.ids.email_usuario.text = "[b]Email:[/b] {}".format(nome)
-                tel_user = self.root.ids.menuadmin.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
+                email_user = self.root.ids.menuadmin.ids.email_usuario.text = nome
+                tel_user = self.root.ids.menuadmin.ids.telefone_usuario.text = telefone
                 self.alterar_informacao(nome)
                 self.mudar_tela("menuadmin")
             else:
-                email_user = self.root.ids.menu.ids.email_usuario.text = "[b]Email:[/b] {}".format(nome)
-                tel_user = self.root.ids.menu.ids.telefone_usuario.text = "[b]Telefone:[/b] {}".format(telefone)
+                email_user = self.root.ids.menu.ids.email_usuario.text = nome
+                tel_user = self.root.ids.menu.ids.telefone_usuario.text = telefone
                 self.alterar_informacao(nome)
                 self.mudar_tela("menu")
         except:
@@ -318,6 +323,10 @@ class MainApp(MDApp):
             print(local_id)
             link = f'https://app-psicologia-66b64-default-rtdb.firebaseio.com/{local_id}.json'
             req = requests.patch(link, data = info_usuario)
+        if req.ok:
+            self.root.ids.box_ficha.ids.status.text = "Ficha alterada com sucesso"
+        else:
+            self.root.ids.box_ficha.ids.status.text = "Erro ao editar ficha"
         print("chegou no final da funcao")
     def carregar_sessoes(self):
         lista_remover_sessoes = self.root.ids.todas_sessoes.ids.lista_sessoes
@@ -362,6 +371,10 @@ class MainApp(MDApp):
         requisicao = requests.delete(link)
         req_dic = requisicao.json()
         print(req_dic)
+        if requisicao.ok:
+            self.root.ids.cancelar_sessao.ids.status.text = "Sessão cancelada com sucesso!"
+        else:
+            self.root.ids.cancelar_sessao.ids.status.text = "Erro ao cancelar sessão"
     def validar_marcar(self, horario_input, selected_date):
         horarios_array = self.get_available_times2(selected_date)
         print(horarios_array)
@@ -371,10 +384,11 @@ class MainApp(MDApp):
             self.confirm_appoint(selected_date, horario_input)
         else:
             print(f'O horário {horario_input} não está na lista.')
+            self.root.ids.marcar_consulta.ids.status.text = "Escolha um horário disponível"
     def confirm_appoint(self, dia, horario):
         horario_input = str(horario)
         local_id_func = self.local_id
-        nome = self.root.ids.menuadmin.ids.email_usuario.text
+        nome = self.root.ids.menu.ids.email_usuario.text
         lista_horario = horario_input.split(',')
         print(f"Horario cru: {horario}")
         print(f"Horario input: {horario_input}")
@@ -393,9 +407,35 @@ class MainApp(MDApp):
         req = requests.patch(link, data = info_dia)
         req_dic = req.json()
         print(req_dic)
+        if req.ok:
+            self.root.ids.marcar_consulta.ids.status.text = "Consulta marcada com sucesso"
+        else:
+            self.root.ids.marcar_consulta.ids.status.text = "Erro ao marcar consulta"
 
         print("marcado com sucesso!")
-
+    def atualizar_horarios(self):
+        string = self.root.ids.editar_horarios.ids.horarios_psico.text
+        horarios = str(string)
+        horarios_lista = horarios.split(',')
+        print(f"horarios: {horarios_lista}")
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Horarios.json"
+        info_dia = f'{{"Horarios": "{horarios_lista}"}}'
+        req = requests.patch(link, data = info_dia)
+        if req.ok:
+            self.root.ids.editar_horarios.ids.status.text = "Horários editados com sucesso"
+        else:
+            self.root.ids.editar_horarios.ids.status.text = "Erro ao editar horários"
+    def carregar_horarios(self):
+        link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Horarios.json"
+        req = requests.get(link)
+        req_dic = req.json()
+        horarios_banco = req_dic['Horarios']
+        horarios = str(horarios_banco)
+        print(horarios)
+        horarios_sem_aspas = horarios.replace("'","")
+        horario_final = horarios_sem_aspas.replace("[","").replace("]", "")
+        self.root.ids.editar_horarios.ids.horarios_psico.text = horario_final
+        self.mudar_tela("editar_horarios")
         pass
 
 
