@@ -8,7 +8,6 @@ from myfirebase import MyFirebase
 from kivymd.uix.pickers import MDDatePicker
 from clientes import Clientes
 from sessoes import Sessoes
-from kivy.core.window import Window
 from kivymd.app import ThemeManager
 from kivymd.app import MDApp
 import subprocess
@@ -22,7 +21,6 @@ from horarios import Horarios
 
 os.environ["SSL_CERT_FILE"] = certifi.where()
 # coding: utf-8
-Window.size = (350,580)
 
 class LoginPage(Screen):
     pass
@@ -63,6 +61,7 @@ class MainApp(MDApp):
         self.theme_cls.primary_palette = "BlueGray"
         self.myfirebase = MyFirebase()
         self.theme_cls = ThemeManager()
+        return GUI
     def open_link(self,**args):
         link = "https://meet.google.com/jjb-wmoo-jkq"
         webbrowser.open(link)

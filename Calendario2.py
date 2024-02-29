@@ -11,7 +11,6 @@ from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen, ScreenManager
 import requests
 import json
-from kivy.core.window import Window
 
 class LoginPage(Screen):
     pass
@@ -34,7 +33,6 @@ class ImageButton(ButtonBehavior,Image ):
 
 class TimePicker(BoxLayout):
     def __init__(self, *args, **kwargs):
-        Window.size = (300, 500)
         super(TimePicker, self).__init__(**kwargs)
         self.orientation = "horizontal"
         link = f"https://app-psicologia-66b64-default-rtdb.firebaseio.com/Horarios.json"
