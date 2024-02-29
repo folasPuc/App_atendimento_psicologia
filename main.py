@@ -8,8 +8,6 @@ from myfirebase import MyFirebase
 from kivymd.uix.pickers import MDDatePicker
 from clientes import Clientes
 from sessoes import Sessoes
-from horarios import Horarios
-from kivy.core.window import Window
 from kivymd.app import ThemeManager
 from kivymd.app import MDApp
 import subprocess
@@ -17,10 +15,12 @@ import requests
 import os
 import certifi
 import unicodedata
+import webbrowser
+from horarios import Horarios
+
 
 os.environ["SSL_CERT_FILE"] = certifi.where()
 # coding: utf-8
-Window.size = (350,580)
 
 class LoginPage(Screen):
     pass
@@ -62,6 +62,9 @@ class MainApp(MDApp):
         self.myfirebase = MyFirebase()
         self.theme_cls = ThemeManager()
         return GUI
+    def open_link(self,**args):
+        link = "https://meet.google.com/jjb-wmoo-jkq"
+        webbrowser.open(link)
     def run_calendar(self):
         date_dialog = MDDatePicker(year=2024, month=1, day=17)
         date_dialog.bind(on_save=self.on_save2, on_cancel=self.on_cancel2)
@@ -74,9 +77,11 @@ class MainApp(MDApp):
         selected_date = str(value)
         print(f"Voce marcou a sessao para dia {selected_date}")
         self.get_available_times(selected_date)
+        
 
     def on_cancel2(self, instance, value):
         pass
+    
     def get_available_times(self, selected_day):
         lista_remover_horarios = self.root.ids.marcar_consulta.ids.lista_horarios
         for item in list(lista_remover_horarios.children):
@@ -437,7 +442,6 @@ class MainApp(MDApp):
         self.root.ids.editar_horarios.ids.horarios_psico.text = horario_final
         self.mudar_tela("editar_horarios")
         pass
-
-
+        
 MainApp().run()
 #comentario

@@ -115,6 +115,7 @@ class DatePicker(BoxLayout):
 
         self.populate_body()
         self.populate_header()
+        
 
     def populate_header(self, *args, **kwargs):
         self.header.clear_widgets()
