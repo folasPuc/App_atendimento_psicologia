@@ -64,7 +64,7 @@ class MainApp(MDApp):
         self.myfirebase = MyFirebase()
         self.theme_cls = ThemeManager()
     def open_link(self,**args):
-        link = "https://meet.google.com/dwe-jktr-iyx"
+        link = "https://meet.google.com/jjb-wmoo-jkq"
         webbrowser.open(link)
     def run_calendar(self):
         date_dialog = MDDatePicker(year=2024, month=1, day=17)
@@ -78,6 +78,7 @@ class MainApp(MDApp):
         selected_date = str(value)
         print(f"Voce marcou a sessao para dia {selected_date}")
         self.get_available_times(selected_date)
+        
 
     def on_cancel2(self, instance, value):
         pass
